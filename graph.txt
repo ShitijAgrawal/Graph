@@ -1,0 +1,131 @@
+import logging
+import math
+import json
+
+
+cords = []
+connected_nodes = []
+path = []
+for temp in range(3600):
+  connected_nodes[temp] = []
+tr = '{"cords":[{"value":5504,"connected_nodes":[4604,5513],"Tags":[],"name":"Entry","description":""},{"value":4604,"connected_nodes":[3504,5504,4613],"Tags":[],"name":"","description":""},{"value":3504,"connected_nodes":[4604,3513,2604],"Tags":[],"name":"","description":""},{"value":2604,"connected_nodes":[2613,3504,1704],"Tags":[],"name":"","description":""},{"value":1704,"connected_nodes":[2604,1713],"Tags":[],"name":"","description":""},{"value":1713,"connected_nodes":[2613,1704,1726,1013],"Tags":[],"name":"","description":""},{"value":2613,"connected_nodes":[2604,1713,3513],"Tags":[],"name":"","description":""},{"value":3513,"connected_nodes":[2613,3504,4613,3526],"Tags":[],"name":"Mid6","description":""},{"value":4613,"connected_nodes":[4604,5513,3513,4639],"Tags":[],"name":"","description":""},{"value":5513,"connected_nodes":[5504,4613],"Tags":[],"name":"","description":""},{"value":2626,"connected_nodes":[3526,1726,2639],"Tags":[],"name":"Mid3","description":""},{"value":2639,"connected_nodes":[2626,4639],"Tags":[],"name":"Mid1","description":""},{"value":1726,"connected_nodes":[1713,2626,1739],"Tags":[],"name":"","description":""},{"value":3526,"connected_nodes":[3513,2626],"Tags":[],"name":"","description":""},{"value":4639,"connected_nodes":[2639,4613],"Tags":[],"name":"","description":""},{"value":2651,"connected_nodes":[2659,1751],"Tags":[],"name":"","description":""},{"value":2659,"connected_nodes":[2651,559],"Tags":[],"name":"Mid2","description":""},{"value":559,"connected_nodes":[2659,551],"Tags":[],"name":"","description":""},{"value":551,"connected_nodes":[1751,559,513],"Tags":[],"name":"Mid5","description":""},{"value":1013,"connected_nodes":[1713],"Tags":[],"name":"Mid4","description":""},{"value":1004,"connected_nodes":[504],"Tags":[],"name":"Exit","description":""},{"value":504,"connected_nodes":[1004,513],"Tags":[],"name":"","description":""},{"value":513,"connected_nodes":[551,504],"Tags":[],"name":"","description":""},{"value":1739,"connected_nodes":[1726,1751],"Tags":[],"name":"","description":""},{"value":1751,"connected_nodes":[1739,2651,551],"Tags":[],"name":"","description":""}]}';
+dest_bool = src_bool = False
+dest = src = -1
+shortest_path_var = []
+
+
+def shortest_path():
+  pred = []
+  dist = []
+  if(BFS(pred,dist)==False):
+    alert
+    return
+  crawl = dest
+  path.append(crawl)
+  ai = 1
+  destlog = "dest: {}"
+  logging.error(destlog.format(dest))
+  srclog = "src: {}"
+  logging.error(srclog.format(src))
+  while (pred[find(crawl,cords)] != -1)):
+    pathlog = "path: {}"
+    logging.error(pathlog.format(path))
+    crawllog = "crawl: {} {}"
+    logging.error(crawllog.format(crawl, find(crawl,cords)))
+    path.append(pred[find(crawl,cords)])
+    crawl = pred[find(crawl,cords)]
+    ai = ai + 1
+    if (ai == 1000):
+      return
+  shortest_path_var = path
+  for b in range(len(path)-1):
+    logging.error(path[b])  #only for debugging
+    make_path(path[b],path[b+1])
+  alert
+  return
+
+
+def BFS(pred, dist):
+  queue = []
+  visited = []
+  for b in range(len(cords)):
+    visited[b] = False
+    dist[b] = 100000
+    pred[b] = -1
+  visited[find(src,cords)] = True
+  dist[find(src,cords)] = 0
+  queue.append(src)
+  o = 0
+  while (len(queue)!=0):
+    u = queue.pop()
+    inde = find(u,cords)
+    o=o+1
+    for b in range(len(connected_nodes[inde])):
+      if (length(u,connected_nodes[inde][b])+dist[find(u,cords)]<dist[find(connected_nodes[inde][b],cords)]):
+        ulog = "u: {} {}"
+        logging.error(ulog.format(u, length(u,connected_nodes[inde][b])))
+        visited[find(connected_nodes[inde][b],cords)] = True
+        dist[find(connected_nodes[inde][b],cords)] = dist[find(u,cords)] +length(u,connected_nodes[inde][b])
+        pred[find(connected_nodes[inde][b],cords)] = u
+        queue.append(connected_nodes[inde][b])
+        o=o+1
+        if (o>100):
+          return False
+    if (o>100):
+      return False
+  if(dist[find(dest,cords)]==100000):
+    return False
+  return True
+
+
+def length(A, B):
+  x1 = math.floor(A/100)
+  x2 = math.floor(B/100)
+  y1 = A%100
+  y2 = B%100
+  z = math.pow((x2-x1),2)+math.pow((y2-y1),2)
+  ABzlog = "A,B: {} {} z: {}"
+  logging.error(ABzlog.format(A, B, z))
+  return math.sqrt(z)
+
+
+def find(key, array):
+  for i in range(len(array)):
+    if (array[i] == key):
+      return i
+  return -1
+
+
+def  make_path(x, y):
+  a = math.floor(x/100) b = x%100
+  c = math.floor(y/100) d = y%100
+  e = math.floor((a+c)/2)
+  f = math.floor((b+d)/2)
+  if (e==a & f==b):
+    g = 100*c + b
+  elif (e==c & f==d):
+    g = 100*a + d
+  else:
+    g = 100*e + f
+    make_path(g,x)
+    make_path(g,y)
+
+
+def Submit(a, b):
+  alert
+  obj = json.loads(tr)
+  src = a
+  dest = b
+  for b in range(len(obj["cords"])):
+    cords[b] = obj["cords"][b]["value"]
+    for c in range(len(obj["cords"][b]["connected_nodes"])):
+      connected_nodes[b][c] = obj["cords"][b]["connected_nodes"][c]
+  alert
+  alert
+  srcdestlog= "{} {}"
+  logging.error(srcdestlog.format(src, dest))
+  shortest_path()
+  llen = len(path) - 2
+  return path[llen]
+
+temp_bool = False
