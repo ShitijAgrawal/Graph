@@ -128,9 +128,9 @@ def Submit(a, b):
   src = a
   dest = b
 #  for b in range(len(obj["cords"])):
-#    cords[b] = obj["cords"][b]["value"]
+#    cords.append(obj["cords"][b]["value"])
 #    for c in range(len(obj["cords"][b]["connected_nodes"])):
-#      connected_nodes[b][c] = obj["cords"][b]["connected_nodes"][c]
+#      connected_nodes[b].append(obj["cords"][b]["connected_nodes"][c])
 #   alert
 #   alert
   cords.append(0000)
